@@ -8,6 +8,9 @@ test.py
 __pycache__/
 *.py[cod]
 
+# vim swp files
+.*.swp
+
 # C extensions
 *.so
 
