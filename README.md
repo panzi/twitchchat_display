@@ -20,6 +20,5 @@ Now you can just run `main.py`, `-d` for debug messages, `-t` to subscribe to fe
  * pygame
  * fonttools
  * webcolors
- * yaml
  * pillow
  * pyyaml
