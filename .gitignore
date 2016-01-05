@@ -8,6 +8,9 @@ test.py
 __pycache__/
 *.py[cod]
 
+# Secrets
+oauth_creds
+
 # vim swp files
 .*.swp
 
