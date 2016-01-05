@@ -7,8 +7,6 @@ import time
 import logging
 from threading import Timer, Thread, Lock
 from fontTools.ttLib import TTFont
-from fontTools.unicode import Unicode
-from itertools import chain
 import json
 import random
 import re
@@ -311,13 +309,8 @@ class FontHelper(object):
 
     def get_font_details(self, font_path):
         ttf = TTFont(font_path, 0, verbose=0, allowVID=0, ignoreDecompileErrors=True, fontNumber=-1)
-        chars = chain.from_iterable([y + (Unicode[y[0]],) for y in x.cmap.items()] for x in ttf["cmap"].tables)
-        font_chars = list(chars)
-        ttf.close()
-        char_dict = {}
-        for char_info in font_chars:
-            char_dict[char_info[0]] = True
-        return char_dict
+        chars = set(ch for tbl in ttf["cmap"].tables for ch in tbl.cmap)
+        return chars
 
     def required_font(self, char):
         # probably dont need a crazy font for ascii range
