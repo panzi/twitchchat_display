@@ -1,4 +1,8 @@
+from __future__ import division
+
+import pygame
 import os
+import sys
 import time
 import logging
 from threading import Timer, Thread, Lock
@@ -26,7 +30,6 @@ else:
     import pygame.font
 
 FONT_PATHS = ["FreeSans.ttf", "OpenSansEmoji.ttf","Cyberbit.ttf", "unifont.ttf" ]
-
 BADGE_TYPES = ['global_mod', 'admin', 'broadcaster', 'mod', 'staff', 'turbo', 'subscriber']
 logger = logging.getLogger("display")
 WIDTH = 0
@@ -84,7 +87,7 @@ class ChatScreen(object):
     def add_chatlines(self, lines):
         with self.lock:
             self.lines.extend(lines)
-            self.lines = self.lines[-(self.max_lines):len(self.lines)]
+            del self.lines[self.max_lines:]
         self.new_activity()
 
     def blit_quicktext(self, text, color=(255, 255, 255)):
@@ -190,7 +193,7 @@ class YTProfileImages(object):
 
     def load_and_resize(self, filename):
         surface = pygame.image.load(filename)
-        ratio = self.img_height / float(surface.get_height())
+        ratio = self.img_height / surface.get_height()
         new_size = (int(surface.get_width() * ratio), self.img_height)
         resized = pygame.transform.scale(surface, new_size)
         if not pygame.display.get_init():
@@ -255,7 +258,7 @@ class TwitchImages(object):
 
     def load_and_resize(self, filename):
         surface = pygame.image.load(filename)
-        ratio = self.img_height / float(surface.get_height())
+        ratio = self.img_height / surface.get_height()
         new_size = (int(surface.get_width() * ratio), self.img_height)
         resized = pygame.transform.scale(surface, new_size)
         if not pygame.display.get_init():
@@ -369,7 +372,7 @@ class TwitchChatDisplay(object):
 
     def load_yt_icon(self, height):
         surface = pygame.image.load("yt_icon.png")
-        ratio = height / float(surface.get_height())
+        ratio = height / surface.get_height()
         new_size = (int(surface.get_width() * ratio), height)
         resized = pygame.transform.scale(surface, new_size)
         if not pygame.display.get_init():

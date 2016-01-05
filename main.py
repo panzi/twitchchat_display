@@ -31,7 +31,8 @@ def get_config():
     config = None
     if os.path.isfile('config.txt'):
         try:
-            config = load(open('config.txt', 'r'))
+            with open('config.txt', 'rb') as stream:
+                config = load(stream.read().decode('UTF-8'))
             required_settings = ['twitch_username', 'twitch_oauth', 'twitch_channels']
             for setting in required_settings:
                 if setting not in config:
@@ -42,8 +43,8 @@ def get_config():
                     # don't allow unicode!
                     if isinstance(config[setting], unicode):
                         config[setting] = str(remove_nonascii(config[setting]))
-        except SystemExit:
-            sys.exit()
+        except (SystemExit, KeyboardInterrupt):
+            raise
         except Exception as e:
             logger.info(e)
             logger.critical('Problem loading configuration file, try deleting config.txt and starting again')
